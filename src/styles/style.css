@@ -1,0 +1,54 @@
+/* Theme Variables */
+:root {
+    --primary-color: ;
+    --secondary-color: ;
+    --accent-color: ;
+
+    --font-scale-ratio: ;
+    --p-fs: 1rem;
+    --h6-fs: calc(var(--font-scale-ratio) * var(--p-fs));
+    --h5-fs: calc(var(--font-scale-ratio) * var(--h6-fs));
+    --h4-fs: calc(var(--font-scale-ratio) * var(--h5-fs));
+    --h3-fs: calc(var(--font-scale-ratio) * var(--h4-fs));
+    --h2-fs: calc(var(--font-scale-ratio) * var(--h3-fs));
+    --h1-fs: calc(var(--font-scale-ratio) * var(--h2-fs));
+}
+
+/* Body */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Headings */
+h1 {
+    font-size: var(--h1-fs);
+}
+
+h2 {
+    font-size: var(--h2-fs);
+}
+
+h3 {
+    font-size: var(--h3-fs);
+}
+
+h4 {
+    font-size: var(--h4-fs);
+}
+
+h5 {
+    font-size: var(--h5-fs);
+}
+
+h6 {
+    font-size: var(--h6-fs);
+}
+
+/* Paragraphs */
+p {
+    font-size: var(--p-fs);
+}

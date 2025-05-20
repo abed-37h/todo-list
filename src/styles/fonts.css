@@ -1,0 +1,13 @@
+/* Fonts Configuration */
+@font-face {
+    font-family: 'CustomFont';
+    src: url('./fonts/CustomFont-Regular.woff2') format('woff2'),
+         url('./fonts/CustomFont-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Define fallback and default font families */
+body {
+    font-family: 'CustomFont', Arial, sans-serif;
+}
