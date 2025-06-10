@@ -1,3 +1,4 @@
+import { isFutureDate, parseDate } from "../utils/dateUtils";
 import { PRIORITY, STATUS } from "./constants";
 
 export default class Todo {
@@ -142,7 +143,7 @@ export default class Todo {
      * @returns {Boolean}
      */
     isOverdue() {
-        return this.dueDate instanceof Date && this.dueDate < new Date();
+        return isFutureDate(this.dueDate);
     }
 
     /**
@@ -154,7 +155,7 @@ export default class Todo {
             id: this.id,
             title: this.title,
             description: this.description,
-            dueDate: this.dueDate?.getTime() || null,
+            dueDate: this.dueDate,
             priority: this.priority,
             status: this.status,
             projectId: this.projectId,
@@ -167,6 +168,6 @@ export default class Todo {
      * @returns {Todo}
      */
     static fromJSON({ id, title, description, dueDate, priority, status, projectId }) {
-        return new Todo(id, title, { description, dueDate: dueDate && new Date(dueDate), priority, status, projectId });
+        return new Todo(id, title, { description, dueDate: parseDate(dueDate), priority, status, projectId });
     }
 }
