@@ -1,4 +1,5 @@
 import { isFutureDate, parseDate } from "../utils/dateUtils";
+import { validate } from "../validation/validations";
 import { PRIORITY, STATUS } from "./constants";
 
 export default class Todo {
@@ -24,12 +25,12 @@ export default class Todo {
      * @param {{description?: String, dueDate?: Date, priority?: import("./constants").PriorityType, status?: import("./constants").StatusType, projectId?: String}} options 
      */
     constructor(id, title, { description = null, dueDate = null, priority = PRIORITY.LOW, status = STATUS.PENDING, projectId = null } = {}) {
-        this.#id = id || crypto.randomUUID();
+        this.#id = this.#setId(id);
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.#status = status;
+        this.#setStatus(status);
         this.projectId = projectId;
     }
 
@@ -38,6 +39,17 @@ export default class Todo {
      */
     get id() {
         return this.#id;
+    }
+
+    /**
+     * Sets id
+     * @param {String | null} id 
+     * @returns {String}
+     */
+    #setId(id) {
+        if (!id) return crypto.randomUUID();
+        validate(id, 'id');
+        return id;
     }
 
     /**
@@ -51,6 +63,7 @@ export default class Todo {
      * @param {String} value 
      */
     set title(value) {
+        validate(value, 'title');
         this.#title = value.trim();
     }
 
@@ -65,6 +78,7 @@ export default class Todo {
      * @param {String | null} value 
      */
     set description(value) {
+        if (value) validate(value, 'description');
         this.#description = value?.trim() || null;
     }
 
@@ -79,6 +93,7 @@ export default class Todo {
      * @param {Date | null} value 
      */
     set dueDate(value) {
+        if (value) validate(value, 'dueDate');
         this.#dueDate = value;
     }
 
@@ -93,6 +108,7 @@ export default class Todo {
      * @param {import("./constants").PriorityType} value 
      */
     set priority(value) {
+        validate(value, 'priority');
         this.#priority = value;
     }
 
@@ -101,6 +117,11 @@ export default class Todo {
      */
     get status() {
         return this.#status;
+    }
+
+    #setStatus(status) {
+        validate(status, 'status');
+        this.#status = status;
     }
 
     /**
@@ -114,6 +135,7 @@ export default class Todo {
      * @param {String | null} value 
      */
     set projectId(value) {
+        if (value) validate(value, 'id');
         this.#projectId = value;
     }
 
