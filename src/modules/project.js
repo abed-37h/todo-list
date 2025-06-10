@@ -1,3 +1,4 @@
+import { validate } from "../validation/validations";
 
 export default class Project {
     /** @type {String} */
@@ -14,7 +15,7 @@ export default class Project {
      * @param {String | null} description 
      */
     constructor(id, name, description = null) {
-        this.#id = id || crypto.randomUUID();
+        this.#id = this.#setId(id);
         this.name = name;
         this.description = description
     }
@@ -26,6 +27,16 @@ export default class Project {
         return this.#id;
     }
 
+    /**
+     * Sets id
+     * @param {String | null} id 
+     * @returns {String}
+     */
+    #setId(id) {
+        if (!id) return crypto.randomUUID();
+        validate(id, 'id');
+        return id;
+    }
 
     /**
      * @returns {String} name
@@ -38,6 +49,7 @@ export default class Project {
      * @param {String} value 
      */
     set name(value) {
+        validate(value, 'name');
         this.#name = value.trim();
     }
 
@@ -52,6 +64,7 @@ export default class Project {
      * @param {String | null} value 
      */
     set description(value) {
+        if (value) validate(value, 'description');
         this.#description = value?.trim() || null;
     }
 
