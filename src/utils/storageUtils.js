@@ -1,12 +1,4 @@
 
-const assignId = (storageKey) => {
-    const counterKey = `${storageKey}_counter`;
-    let counter = +localStorage.getItem(counterKey) || 0;
-    counter++;
-    localStorage.setItem(counterKey, counter.toString());
-    return counter;
-}
-
 export const getItems = (storageKey) => {
     const itemsJSON = localStorage.getItem(storageKey);
     return itemsJSON ? JSON.parse(itemsJSON) : [];
@@ -14,7 +6,6 @@ export const getItems = (storageKey) => {
 
 export const saveItem = (storageKey, item) => {
     const items = getItems(storageKey);
-    item.id = assignId(storageKey);
     items.push(item);
     localStorage.setItem(storageKey, JSON.stringify(items));
 }
