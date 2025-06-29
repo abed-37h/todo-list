@@ -139,8 +139,13 @@ export class Component {
      * @returns {this}
      */
     on({selector, event, handler}) {
-        const target = selector ? this._element.findAll(selector) : this._element;
-        target?.on(event, handler);
+        if (!selector) {
+            this._element.on(event, handler);
+            return this;
+        }
+
+        const targetList = this._element.findAll(selector);
+        targetList.forEach(target => target.on(event, handler));
         return this;
     }
 
@@ -152,8 +157,13 @@ export class Component {
      * @returns {this}
      */
     off({selector, event, handler}) {
-        const target = selector ? this._element.findAll(selector) : this._element;
-        target?.off(event, handler);
+        if (!selector) {
+            this._element.off(event, handler);
+            return this;
+        }
+
+        const targetList = this._element.findAll(selector);
+        targetList.forEach(target => target.off(event, handler));
         return this;
     }
 
@@ -165,8 +175,13 @@ export class Component {
      * @returns {this}
      */
     emit({selector, event, detail = {}}) {
-        const target = selector ? this._element.findAll(selector) : this._element;
-        target?.trigger(event, detail);
+        if (!selector) {
+            this._element.trigger(event, detail);
+            return this;
+        }
+
+        const targetList = this._element.findAll(selector);
+        targetList.forEach(target => target.trigger(event, detail));
         return this;
     }
 

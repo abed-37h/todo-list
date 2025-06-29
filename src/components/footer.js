@@ -1,4 +1,4 @@
-import { DomElement } from "../core/domElement";
+import DomElement from "../core/domElement";
 import { Component } from "./component";
 import './footer.css';
 import GithubLogo from '../assets/icons/github.svg';

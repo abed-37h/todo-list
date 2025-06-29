@@ -4,15 +4,15 @@
  * Note: To wrap an existing element, use `DomElement.from()` or `DomElement.find()`.
  * The constructor only accepts tag names as strings.
  */
-export class DomElement {
+export default class DomElement {
     /** @type {HTMLElement} */
     #element;
 
     /**
      * Class Constructor
-     * @param {String} tagName 
+     * @param {String} [tagName = 'div'] 
      */
-    constructor(tagName) {
+    constructor(tagName = 'div') {
         this.#element = document.createElement(tagName);
     }
     
@@ -395,7 +395,7 @@ export class DomElement {
      * @static
      */
     static from(element) {
-        const instance = Object.create(DomElement.prototype);
+        const instance = new DomElement();
         instance.#element = element;
         return instance;
     }
