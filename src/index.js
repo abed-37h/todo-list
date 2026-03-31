@@ -4,37 +4,47 @@ import './style/style.css';
 
 import MenuIconSrc from './assets/icons/menu.svg';
 import AddIconSrc from './assets/icons/add-new.svg';
+import Todo from './classes/todo.js';
+import Project from './classes/project.js';
+import Category from './classes/category.js';
+
+let activeContainer = 'cat:1';
 
 const categories = [
-    {
+    new Category({
+        id: 'cat:1',
         name: 'Inbox',
-        active: true,
-    },
-    {
+        description: 'You can find all standalone todo here.',
+        filterFn: todo => todo.projectId === null,
+    }),
+    new Category({
+        id: 'cat:2',
         name: 'Today',
-        active: false,
-    },
-    {
+        description: 'Todo due to today are here.',
+        filterFn: todo => todo.dueDate === new Date(),
+    }),
+    new Category({
+        id: 'cat:3',
         name: 'Completed',
-        active: false,
-    },
+        description: 'Here are the completed todos',
+        filterFn: todo => todo.completed,
+    }),
 ];
 
 const projects = [
-    {
+    new Project({
+        id: 'proj:1',
         name: 'Work',
-        active: false,
-    },
+        description: 'To manage work related tasks',
+    }),
 ];
 
 const todos = [
-    {
+    new Todo({
+        id: 'todo:1',
         title: 'Add my first todo',
-        description: '',
-        dueDate: null,
-        priority: 'low',
-        completed: false,
-    },
+        description: 'Go ahead and try the app by adding a new todo.',
+    }),
 ];
 
 const sidebar = document.createElement('aside');
@@ -140,7 +150,7 @@ categories.forEach(category => {
     const categoryItem = document.createElement('li');
     categoryItem.className = 'list-item category-item';
 
-    if (category.active) {
+    if (category.id === activeContainer) {
         categoryItem.classList.add('active');
     }
 
@@ -166,7 +176,7 @@ else {
         const projectItem = document.createElement('li');
         projectItem.className = 'project-item';
 
-        if (project.active) {
+        if (project.id === activeContainer) {
             projectItem.classList.add('active');
         }
     
@@ -194,7 +204,7 @@ else {
         todoItem.className = 'list-item todo-item';
 
         if (todo.completed) {
-            todo.classList.add('completed');
+            todoItem.classList.add('completed');
         }
 
         const toggleCompletionLabel = document.createElement('label');
@@ -214,7 +224,7 @@ else {
         );
         
         toggleCompletionLabel.addEventListener('change', () => {
-            todo.completed = !todo.completed,
+            todo.toggleComplete(),
             todoItem.classList.toggle('completed')
         });
     
