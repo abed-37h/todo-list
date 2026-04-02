@@ -1,0 +1,33 @@
+
+.group-header .add-button:hover {
+    background-color: hsl(from var(--primary-color) h s 65%);
+}
+
+.group-header .icon {
+    filter: brightness(0) invert(.9);
+}
+
+.group-header .add-button:hover .icon {
+    filter: invert(.1);
+}
+
+.group-list.empty {
+    color: var(--neutral-25);
+}
+
+.group-item {
+    padding: .5rem;
+    border-radius: .5rem;
+}
+
+.group-item:hover {
+    background-color: hsl(from var(--neutral-100) h s l / 5%);
+}
+
+.group-item.active {
+    background-color: hsl(from var(--neutral-100) h s l / 15%);
+}
+
+.group-item .group-name {
+    flex: 1;
+}
