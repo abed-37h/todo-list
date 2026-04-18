@@ -1,0 +1,60 @@
+
+.form.todo-form {
+    width: min(100%, 52ch);
+    border-radius: 1rem;
+    gap: 2rem;
+    border: none;
+}
+
+.todo-form .fieldset {
+    border: none;
+}
+
+.todo-form .input-container {
+    border-bottom: 1px solid var(--neutral-10);
+}
+
+.todo-form .input {
+    border: none;
+    border-radius: 0.5rem;
+    outline: none;
+}
+
+.todo-form .input:hover {
+    background-color: hsl(from var(--primary-color) 255 50% 97.5%);
+}
+
+.todo-form .input:focus {
+    outline: 2px solid var(--accent-color);
+}
+
+.todo-form .input[name=title] {
+    line-height: 1.5;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.todo-form textarea {
+    min-height: 5rem;
+    line-height: 1.25;
+    font-size: 1.1rem;
+}
+
+.todo-form button {
+    border-radius: .5rem;
+}
+
+.detailed-view .title .field-value {
+    line-height: 1.5;
+    font-size: 1.5rem;
+    font-weight: 600;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.detailed-view .description .field-value {
+    min-height: 5rem;
+    line-height: 1.25;
+    font-size: 1.1rem;
+    white-space: pre-wrap;
+}

@@ -4,6 +4,7 @@
     /* Brand & semantic colors */
     --primary-color: #747BAA;
     --secondary-color: #161925;
+    --accent-color: #53D8FB;
 
     /* Priority colors */
     --priority-high-color: color-mix(var(--primary-color) 15%, #f00);

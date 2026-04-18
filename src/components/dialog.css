@@ -1,0 +1,94 @@
+
+.dialog[open] {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    width: min(90%, 52ch);
+    border: none;
+    border-radius: .5rem;
+    box-shadow: 0 4px 16px var(--neutral-25);
+}
+
+.dialog .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 1rem;
+    background-color: hsl(from var(--primary-color) h s 90%);
+}
+
+.dialog .dialog-content {
+    border: none;
+}
+
+.dialog .dialog-content:focus {
+    outline: 2px solid var(--neutral-25);
+}
+
+.dialog .close-button {
+    border: none;
+    border-radius: 50%;
+    background-color: inherit;
+    color: inherit;
+}
+
+.dialog .close-button:hover {
+    transform: scale(1.1);
+}
+
+.dialog .close-button:focus {
+    outline: 2px solid var(--accent-color);
+    outline: 2px;
+}
+
+.dialog button.close-button .icon {
+    width: 1.5rem;
+    filter: brightness(0) saturate(100%) invert(18%) sepia(28%)
+        saturate(870%) hue-rotate(170deg) brightness(94%) contrast(94%);
+}
+
+.dialog .dialog-footer {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.dialog .dialog-footer:empty {
+    display: none;
+}
+
+.dialog .dialog-footer:has(> button:only-child) {
+    justify-content: flex-end;
+}
+
+.dialog .dialog-footer > button:only-child {
+    margin: 0 1rem;
+}
+
+.dialog .dialog-footer button {
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: .5rem;
+}
+
+.dialog .dialog-footer button:hover {
+    filter: brightness(1.1);
+}
+
+.dialog .dialog-footer button.form-cancel {
+    background-color: var(--neutral-10);
+    color: var(--neutral-75);
+}
+
+.dialog .dialog-footer button.danger {
+    background-color: var(--danger-bg);
+    color: var(--danger);
+}
+
+.dialog .dialog-footer button.form-cta {
+    background-color: var(--accent-color);
+    color: var(--neutral-5);
+}

@@ -8,6 +8,8 @@ import Project from './classes/project.js';
 import Category from './classes/category.js';
 import { createGroupContainer, createGroupList } from './components/groupList.js';
 import { createTodoContainer } from './components/todoList.js';
+import { createDialog } from './components/dialog.js';
+import { updateTodoDialog } from './components/todoDialog.js';
 
 const categories = [
     new Category({
@@ -74,20 +76,39 @@ const app = () => {
     const main = document.createElement('main');
     main.id = 'main';
     
-    const todoContainer = createTodoContainer(todos, 'Inbox')
+    const todoContainer = createTodoContainer(todos, 'Inbox');
+
+    const dialog = createDialog();
     
-    main.append(todoContainer);
+    main.append(
+        todoContainer,
+        dialog,
+    );
     
     document.body.append(
         sidebar,
         main,
     );
+
+    document.addEventListener('todo:input', () => {
+        updateTodoDialog(dialog, 'add');
+        dialog.showModal();
+    });
+
+    document.addEventListener('todo:view', e => {
+        updateTodoDialog(dialog, 'view', e.detail.todo);
+        dialog.showModal();
+    });
 };
 
 
 const updateActiveGroup = () => {
     const  activeGroupId = location.hash.substring(1) || 'cat:1';
     const activeGroup = [...categories, ...projects].find(group => group.id === activeGroupId);
+
+    if (activeGroupId.startsWith('todo')) {
+        return;
+    }
 
     document.querySelectorAll('.group-item').forEach(groupItem => {
         if (groupItem.dataset.id === activeGroupId) {

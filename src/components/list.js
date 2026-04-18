@@ -11,6 +11,10 @@ export const createListHeader = (title, titleEl = 'h3') => {
 
     const addButton = document.createElement('button');
     addButton.className = 'add-button';
+    addButton.addEventListener('click', () => {
+        const addEvent = new CustomEvent('click-add');
+        listHeader.dispatchEvent(addEvent);
+    });
 
     const addIcon = document.createElement('img');
     addIcon.className = 'icon';

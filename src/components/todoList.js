@@ -16,6 +16,12 @@ export const createTodoItem = (todo) => {
     todoTitle.className = 'item-name todo-title';
     todoTitle.href = `#${todo.id}`;
     todoTitle.textContent = todo.title;
+    todoTitle.addEventListener('click', () => {
+        const showTodoEvent = new CustomEvent('todo:view', {
+            detail: { todo }
+        });
+        document.dispatchEvent(showTodoEvent);
+    })
 
     const todoDueDate = document.createElement('p');
     todoDueDate.className = 'item-date todo-due-date';
@@ -47,6 +53,10 @@ export const createTodoList = (todos) => {
 export const createTodoContainer = (todos, title = 'Todos') => {
     const todoHeader = createListHeader(title);
     todoHeader.classList.add('todo-header');
+    todoHeader.addEventListener('click-add', () => {
+        const addTodoEvent = new CustomEvent('todo:input');
+        document.dispatchEvent(addTodoEvent);
+    });
 
     const todoContainer = createListContainer(
         todoHeader,
