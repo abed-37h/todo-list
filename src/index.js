@@ -10,6 +10,7 @@ import { createGroupContainer, createGroupList } from './components/groupList.js
 import { createTodoContainer } from './components/todoList.js';
 import { createDialog } from './components/dialog.js';
 import { updateTodoDialog } from './components/todoDialog.js';
+import { updateProjectDialog } from './components/projectDialog.js';
 
 const categories = [
     new Category({
@@ -97,6 +98,11 @@ const app = () => {
 
     document.addEventListener('todo:view', e => {
         updateTodoDialog(dialog, 'view', e.detail.todo);
+        dialog.showModal();
+    });
+
+    document.addEventListener('project:input', () => {
+        updateProjectDialog(dialog);
         dialog.showModal();
     });
 };

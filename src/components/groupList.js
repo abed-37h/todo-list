@@ -28,6 +28,10 @@ export const createGroupList = (groups) => {
 export const createGroupContainer = (groups, title = 'Projects') => {
     const groupHeader = createListHeader(title, 'h4');
     groupHeader.classList.add('group-header');
+    groupHeader.addEventListener('click-add', () => {
+        const addProjectEvent = new CustomEvent('project:input');
+        document.dispatchEvent(addProjectEvent);
+    });
 
     const groupContainer = createListContainer(
         groupHeader,

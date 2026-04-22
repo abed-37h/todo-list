@@ -1,0 +1,37 @@
+
+.form.project-form {
+    width: min(100%, 52ch);
+    border-radius: 1rem;
+    gap: 2rem;
+    border: none;
+}
+
+.project-form .input-container {
+    border-bottom: 1px solid var(--neutral-10);
+}
+
+.project-form .input {
+    border: none;
+    border-radius: .5rem;
+    outline: none;
+}
+
+.project-form .input:hover {
+    background-color: hsl(from var(--primary-color) h s 95%);
+}
+
+.project-form .input[name=name] {
+    line-height: 1.5;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.project-form textarea {
+    min-height: 5rem;
+    line-height: 1.25rem;
+    font-size: 1.1rem;
+}
+
+.project-form button {
+    border-radius: .5rem;
+}
