@@ -56,7 +56,7 @@ export default class Todo {
     }
 
     set description(value) {
-        if (typeof value !== 'string') {
+        if (value !== null && typeof value !== 'string') {
             throw 'Invalid description: description must be a string!';
         }
         
@@ -70,7 +70,8 @@ export default class Todo {
     set dueDate(value) {
         if (value !== null && !(value instanceof Date)) {
             try {
-                this.#dueDate = Date(value);
+                this.#dueDate = new Date(value);
+                return;
             } catch (error) {
                 throw 'Invalid dueDate: provided date must be convertible to `Date` datatype or null!';
             }
@@ -126,12 +127,15 @@ export default class Todo {
         if (typeof value !== 'boolean') {
             throw 'Invalid completed status: completed status must be a boolean!';
         }
+
+        this.#completed = value;
     }
 
     #setDateCreated(value) {
         if (value !== null && !(value instanceof Date)) {
             try {
-                this.#dueDate = Date(value);
+                this.#dateCreated = new Date(value);
+                return;
             } catch (error) {
                 throw 'Invalid dateCreated: provided date must be convertible to `Date` datatype or null!';
             }
@@ -162,7 +166,7 @@ export default class Todo {
             title: this.title,
             description: this.description,
             dueDate: this.dueDate,
-            priority: this.title,
+            priority: this.priority,
             projectId: this.projectId,
             completed: this.completed,
             dateCreated: this.dateCreated,

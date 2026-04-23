@@ -26,7 +26,7 @@ export default class Group {
     }
     
     set name(value) {
-        if (!value) {
+        if (!value || typeof value !== 'string') {
             throw 'Invalid name: name must be non empty string!';
         }
         
@@ -38,11 +38,11 @@ export default class Group {
     }
 
     set description(value) {
-        if (typeof value !== 'string') {
+        if (value !== null && typeof value !== 'string') {
             throw 'Invalid description: description must be a string!';
         }
-
-        this.#description = value;
+        
+        this.#description = value || '';
     }
 
     get filterFn() {
