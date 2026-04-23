@@ -39,7 +39,34 @@ export const createTodoForm = () => {
         }),
     ]);
     
-    const todoForm = createForm('post', [ formInputSection ]);
+    const todoForm = createForm({
+        id: 'todo-form',
+        method: 'post',
+        elements: [ formInputSection ],
+        onSubmit: e => {
+            e.preventDefault();
+
+            const data = new FormData(e.target);
+
+            const title = data.get('title');
+            const description = data.get('description');
+            const dueDate = data.get('dueDate');
+            const priority = data.get('priority');
+
+            const todo = new Todo({
+                id: `todo:${crypto.randomUUID()}`,
+                title,
+                description,
+                dueDate,
+                priority,
+            });
+            
+            const submitFormEvent = new CustomEvent('todo:add', {
+                detail: { todo },
+            });
+            document.dispatchEvent(submitFormEvent);
+        },
+    });
     todoForm.classList.add('todo-form');
 
     return todoForm;
@@ -97,6 +124,7 @@ export const updateTodoDialog = (dialog, mode, todo = null) => {
                 className: 'form-cta',
                 textContent: 'Add',
                 attributes: { name: 'add' },
+                form: content.id,
             }),
         ];
     }

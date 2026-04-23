@@ -11,43 +11,60 @@ import { createTodoContainer } from './components/todoList.js';
 import { createDialog } from './components/dialog.js';
 import { updateTodoDialog } from './components/todoDialog.js';
 import { updateProjectDialog } from './components/projectDialog.js';
+import StorageInterface from './storage/storage.js';
+
+const projectStorage = new StorageInterface('projects', Project);
+const todoStorage = new StorageInterface('todos', Todo);
 
 const categories = [
     new Category({
-        id: 'cat:1',
+        id: `cat:${crypto.randomUUID()}`,
         name: 'Inbox',
         description: 'You can find all standalone todo here.',
         filterFn: todo => todo.projectId === null,
     }),
     new Category({
-        id: 'cat:2',
+        id: `cat:${crypto.randomUUID()}`,
         name: 'Today',
         description: 'Todo due to today are here.',
         filterFn: todo => todo.dueDate === new Date(),
     }),
     new Category({
-        id: 'cat:3',
+        id: `cat:${crypto.randomUUID()}`,
         name: 'Completed',
         description: 'Here are the completed todos',
         filterFn: todo => todo.completed,
     }),
 ];
 
-const projects = [
+const defaultProjects = [
     new Project({
-        id: 'proj:1',
+        id: `proj:${crypto.randomUUID()}`,
         name: 'Work',
         description: 'To manage work related tasks',
     }),
 ];
 
-const todos = [
+const defaultTodos = [
     new Todo({
-        id: 'todo:1',
+        id: `todo:${crypto.randomUUID()}`,
         title: 'Add my first todo',
         description: 'Go ahead and try the app by adding a new todo.',
     }),
 ];
+
+let projects = projectStorage.fetch();
+let todos = todoStorage.fetch();
+
+if (!projects) {
+    projects = defaultProjects;
+    projectStorage.insert(...defaultProjects);
+}
+
+if (!todos) {
+    todos = defaultTodos;
+    todoStorage.insert(...defaultTodos);
+}
 
 const app = () => {
     const sidebar = document.createElement('aside');
@@ -96,20 +113,36 @@ const app = () => {
         dialog.showModal();
     });
 
+    document.addEventListener('todo:add', e => {
+        const todo = e.detail.todo;
+        todoStorage.insert(todo);
+        location.reload();
+        
+        dialog.close();
+    });
+    
     document.addEventListener('todo:view', e => {
         updateTodoDialog(dialog, 'view', e.detail.todo);
         dialog.showModal();
     });
-
+    
     document.addEventListener('project:input', () => {
         updateProjectDialog(dialog);
         dialog.showModal();
+    });
+
+    document.addEventListener('project:add', e => {
+        const project = e.detail.project;
+        projectStorage.insert(project);
+        location.reload();
+
+        dialog.close();
     });
 };
 
 
 const updateActiveGroup = () => {
-    const  activeGroupId = location.hash.substring(1) || 'cat:1';
+    const  activeGroupId = location.hash.substring(1) || categories[0].id;
     const activeGroup = [...categories, ...projects].find(group => group.id === activeGroupId);
 
     if (activeGroupId.startsWith('todo')) {

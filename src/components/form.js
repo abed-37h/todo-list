@@ -1,10 +1,17 @@
 import './form.css';
 
-export const createForm = (method, elements = []) => {
+export const createForm = ({
+    id,
+    method,
+    onSubmit,
+    elements = [],
+}) => {
     const form = document.createElement('form');
+    form.id = id;
     form.className = 'form';
     form.method = method;
     form.action = '';
+    form.addEventListener('submit', onSubmit);
 
     form.append(...elements);
 
