@@ -1,3 +1,4 @@
+import { isFutureDate, isValidDate, parseDate } from '../utils/dateUtils.js';
 import Group from './group.js';
 
 export default class Project extends Group {
@@ -23,16 +24,22 @@ export default class Project extends Group {
     }
 
     #setDateCreated(value) {
-        if (value !== null && !(value instanceof Date)) {
-            try {
-                this.#dateCreated = new Date(value);
-                return;
-            } catch (error) {
-                throw 'Invalid dateCreated: provided date must be convertible to `Date` datatype or null!';
-            }
+        if (value === null) {
+            this.#dateCreated = null;
+            return;
         }
 
-        this.#dateCreated = value;
+        const temp = isValidDate(value) ? value : new Date(value);
+
+        if (!isValidDate(temp)) {
+            throw 'Invalid dateCreated: provided date must be convertible to `Date` datatype or null!';
+        }
+        
+        if (isFutureDate(temp)) {
+            throw 'Invalid dateCreated: provided date must not be in future!';
+        }
+
+        this.#dateCreated = temp;
     }
 
     toJSON() {
@@ -54,7 +61,7 @@ export default class Project extends Group {
             id,
             name,
             description,
-            dateCreated,
+            dateCreated: parseDate(dateCreated),
         });
     }
 }

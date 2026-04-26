@@ -1,6 +1,7 @@
 import './todoList.css';
 import { createCheckbox } from './checkbox.js';
 import { createList, createListContainer, createListHeader } from './list.js';
+import { formatFullDate } from '../utils/dateUtils.js';
 
 export const createTodoItem = (todo) => {
     const todoItem = document.createElement('li');
@@ -25,7 +26,7 @@ export const createTodoItem = (todo) => {
 
     const todoDueDate = document.createElement('p');
     todoDueDate.className = 'item-date todo-due-date';
-    todoDueDate.textContent = todo.dueDate;
+    todoDueDate.textContent = formatFullDate(todo.dueDate);
 
     const todoPriority = document.createElement('span');
     todoPriority.className = `todo-priority p-${todo.priority}`;

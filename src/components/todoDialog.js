@@ -3,6 +3,7 @@ import Todo from '../classes/todo.js';
 import { createButton, createForm, createInputContainer, createInputSection, createInputTextbox, createSelectInput } from './form.js';
 import { setDialogFooterButtons, setDialogHeaderTitle, updateDialogContent } from './dialog.js';
 import { createDetailedView, createField } from './detailedView.js';
+import { formatFullDate } from '../utils/dateUtils.js';
 
 export const createTodoForm = () => {
     const formInputSection = createInputSection([
@@ -50,7 +51,7 @@ export const createTodoForm = () => {
 
             const title = data.get('title');
             const description = data.get('description');
-            const dueDate = data.get('dueDate');
+            const dueDate = data.get('dueDate') || null;
             const priority = data.get('priority');
 
             const todo = new Todo({
@@ -73,7 +74,6 @@ export const createTodoForm = () => {
 };
 
 export const createTodoView = (todo) => {
-    console.log(todo.isComplete())
     const todoView = createDetailedView([
         createField({
             label: 'Title',
@@ -87,7 +87,7 @@ export const createTodoView = (todo) => {
         }),
         createField({
             label: 'Due Date',
-            value: todo.dueDate,
+            value: formatFullDate(todo.dueDate),
             className: 'due-date',
         }),
         createField({

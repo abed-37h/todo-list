@@ -1,3 +1,4 @@
+import { isFutureDate, isValidDate, parseDate } from '../utils/dateUtils.js';
 
 export default class Todo {
     static PRIORITIES = Object.freeze({
@@ -68,16 +69,18 @@ export default class Todo {
     }
 
     set dueDate(value) {
-        if (value !== null && !(value instanceof Date)) {
-            try {
-                this.#dueDate = new Date(value);
-                return;
-            } catch (error) {
-                throw 'Invalid dueDate: provided date must be convertible to `Date` datatype or null!';
-            }
+        if (value === null) {
+            this.#dueDate = null;
+            return;
         }
 
-        this.#dueDate = value;
+        const temp = isValidDate(value) ? value : new Date(value);
+
+        if (!isValidDate(temp)) {
+            throw 'Invalid dueDate: provided date must be convertible to `Date` datatype or null!';
+        }
+
+        this.#dueDate = temp;
     }
 
     get priority() {
@@ -132,16 +135,22 @@ export default class Todo {
     }
 
     #setDateCreated(value) {
-        if (value !== null && !(value instanceof Date)) {
-            try {
-                this.#dateCreated = new Date(value);
-                return;
-            } catch (error) {
-                throw 'Invalid dateCreated: provided date must be convertible to `Date` datatype or null!';
-            }
+        if (value === null) {
+            this.#dateCreated = null;
+            return;
         }
 
-        this.#dateCreated = value;
+        const temp = isValidDate(value) ? value : new Date(value);
+
+        if (!isValidDate(temp)) {
+            throw 'Invalid dateCreated: provided date must be convertible to `Date` datatype or null!';
+        }
+        
+        if (isFutureDate(temp)) {
+            throw 'Invalid dateCreated: provided date must not be in future!';
+        }
+
+        this.#dateCreated = temp;
     }
 
     isComplete() {
@@ -187,11 +196,11 @@ export default class Todo {
             id,
             title,
             description,
-            dueDate: dueDate && new Date(dueDate),
+            dueDate: parseDate(dueDate),
             priority,
             projectId,
             completed,
-            dateCreated: dateCreated && new Date(dateCreated),
+            dateCreated: parseDate(dateCreated),
         });
     }
 }
