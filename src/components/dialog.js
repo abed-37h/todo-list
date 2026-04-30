@@ -1,5 +1,6 @@
 import './dialog.css';
-import CloseIconSrc from '../assets/icons/window-close.svg';
+import CloseIcon from '../assets/icons/window-close.svg';
+import { createIconButton } from './icon.js';
 
 export const createDialog = () => {
     const dialog = document.createElement('dialog');
@@ -11,16 +12,12 @@ export const createDialog = () => {
     const headerTitle = document.createElement('h3');
     headerTitle.className = 'header-title';
 
-    const closeButton = document.createElement('button');
-    closeButton.className = 'close-button';
-    closeButton.addEventListener('click', () => dialog.close());
-
-    const closeIcon = document.createElement('img');
-    closeIcon.className = 'icon';
-    closeIcon.src = CloseIconSrc;
-    closeIcon.alt = 'Close';
-
-    closeButton.append(closeIcon);
+    const closeButton = createIconButton({
+        className: 'close-button',
+        symbolId: CloseIcon.id,
+        title: 'Close',
+        onClick: () => dialog.close(),
+    });
 
     dialogHeader.append(
         headerTitle,

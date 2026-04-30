@@ -4,11 +4,7 @@
 }
 
 .group-header .icon {
-    filter: brightness(0) invert(.9);
-}
-
-.group-header .add-button:hover .icon {
-    filter: invert(.1);
+    fill: var(--neutral-10);
 }
 
 .group-list.empty {

@@ -1,5 +1,6 @@
 import './list.css';
-import AddIconSrc from './../assets/icons/add-new.svg';
+import AddIcon from './../assets/icons/add-new.svg';
+import { createIconButton } from './icon.js';
 
 export const createListHeader = (title, titleEl = 'h3') => {
     const listHeader = document.createElement('div');
@@ -9,19 +10,15 @@ export const createListHeader = (title, titleEl = 'h3') => {
     headerTitle.className = 'header-title';
     headerTitle.textContent = title;
 
-    const addButton = document.createElement('button');
-    addButton.className = 'add-button';
-    addButton.addEventListener('click', () => {
-        const addEvent = new CustomEvent('click-add');
-        listHeader.dispatchEvent(addEvent);
+    const addButton = createIconButton({
+        className: 'add-button',
+        symbolId: AddIcon.id,
+        title: 'Add new',
+        onClick: () => {
+            const addEvent = new CustomEvent('click-add');
+            listHeader.dispatchEvent(addEvent);
+        },
     });
-
-    const addIcon = document.createElement('img');
-    addIcon.className = 'icon';
-    addIcon.src = AddIconSrc;
-    addIcon.alt = 'Add new';
-
-    addButton.append(addIcon);
 
     listHeader.append(
         headerTitle,

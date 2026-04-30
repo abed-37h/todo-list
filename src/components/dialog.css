@@ -43,12 +43,6 @@
     outline: 2px;
 }
 
-.dialog button.close-button .icon {
-    width: 1.5rem;
-    filter: brightness(0) saturate(100%) invert(18%) sepia(28%)
-        saturate(870%) hue-rotate(170deg) brightness(94%) contrast(94%);
-}
-
 .dialog .dialog-footer {
     display: flex;
     justify-content: space-around;

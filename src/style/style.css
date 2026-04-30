@@ -82,10 +82,6 @@ p {
     font-size: var(--p-fs);
 }
 
-.icon {
-    width: 1.5rem;
-}
-
 body:has(.sidebar:not(.collapsed)) {
     padding-left: 20rem;
 }
@@ -123,12 +119,12 @@ body:has(.sidebar:not(.collapsed)) {
     transform: translateX(calc(100% + 1.75rem));
 }
 
-.sidebar:not(.sidebar.collapsed) .toggle-sidebar-button {
-    filter: invert(100%);
+.sidebar:not(.sidebar.collapsed) .toggle-sidebar-button .icon {
+    fill: var(--neutral-10);
 }
 
 .toggle-sidebar-button .icon {
-    width: 2rem;
+    --width: 2rem;
 }
 
 #main {
@@ -138,8 +134,4 @@ body:has(.sidebar:not(.collapsed)) {
     align-items: center;
     justify-self: center;
     padding: 4rem;
-}
-
-button .icon {
-    filter: invert(.1);
 }

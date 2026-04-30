@@ -2,10 +2,11 @@ import './style/fonts.css';
 import './style/reset.css';
 import './style/style.css';
 
-import MenuIconSrc from './assets/icons/menu.svg';
+import MenuIcon from './assets/icons/menu.svg';
 import Todo from './classes/todo.js';
 import Project from './classes/project.js';
 import Category from './classes/category.js';
+import { createIconButton } from './components/icon.js';
 import { createGroupContainer, createGroupList } from './components/groupList.js';
 import { createTodoContainer } from './components/todoList.js';
 import { createDialog } from './components/dialog.js';
@@ -70,20 +71,16 @@ const app = () => {
     const sidebar = document.createElement('aside');
     sidebar.className = 'sidebar';
     
-    const toggleSidebarButton = document.createElement('button');
-    toggleSidebarButton.className = 'toggle-sidebar-button active';
-    toggleSidebarButton.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
-    
-    const menuIcon = document.createElement('img');
-    menuIcon.className = 'icon';
-    menuIcon.src = MenuIconSrc;
-    menuIcon.alt = 'Toggle sidebar';
+    const toggleSidebarButton = createIconButton({
+        className: 'toggle-sidebar-button active',
+        symbolId: MenuIcon.id,
+        title: 'Toggle sidebar',
+        onClick: () => sidebar.classList.toggle('collapsed'),
+    });
     
     const categoryList = createGroupList(categories);
     
     const projectContainer = createGroupContainer(projects, 'Projects');
-    
-    toggleSidebarButton.append(menuIcon);
     
     sidebar.append(
         toggleSidebarButton,
