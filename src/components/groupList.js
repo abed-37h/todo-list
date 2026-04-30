@@ -20,6 +20,12 @@ export const createGroupItem = (group) => {
         const actionList = createActionList(
             Object.values(DEFAULT_ACTIONS).map(action => createIconButton(action)),
         );
+        actionList.addEventListener('action:edit', () => {
+            const editTodoEvent = new CustomEvent('project:edit', {
+                detail: { project: group },
+            });
+            document.dispatchEvent(editTodoEvent);
+        });
         actionList.addEventListener('action:delete', () => {
             const deleteTodoEvent = new CustomEvent('project:delete', {
                 detail: { project: group },

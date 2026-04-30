@@ -72,6 +72,7 @@ export const createInputTextbox = ({
     name,
     placeholder = '',
     required = false,
+    value = null,
     ...attributes
 }) => {
     let inputTextbox = null;
@@ -88,6 +89,7 @@ export const createInputTextbox = ({
     inputTextbox.name = name;
     inputTextbox.placeholder = placeholder;
     inputTextbox.required = required;
+    inputTextbox.value = value;
 
     Object.entries(attributes).forEach(([key, value]) => inputTextbox.setAttribute(key, value));
 
@@ -98,6 +100,7 @@ export const createSelectInput = ({
     name,
     options = [],
     required = false,
+    value = null,
     ...attributes
 }) => {
     const selectInput = document.createElement('select');
@@ -113,6 +116,7 @@ export const createSelectInput = ({
             return option;
         }),
     );
+    selectInput.value = value;
 
     Object.entries(attributes).forEach(([key, value]) => selectInput.setAttribute(key, value));
 

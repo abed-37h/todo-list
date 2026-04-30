@@ -3,7 +3,19 @@ import { setDialogFooterButtons, setDialogHeaderTitle, updateDialogContent } fro
 import { createButton, createForm, createInputContainer, createInputSection, createInputTextbox } from './form.js';
 import './projectDialog.css';
 
-export const createProjectForm = () => {
+export const createProjectForm = (project = null) => {
+    let name = null;
+    let description = null;
+    let event = 'add';
+    let projectId = `proj:${crypto.randomUUID()}`;
+
+    if (project) {
+        name = project.name;
+        description = project.description;
+        event = 'update';
+        projectId = project.id;
+    }
+
     const formInputSection = createInputSection([
         createInputContainer({
             input: createInputTextbox({
@@ -11,6 +23,7 @@ export const createProjectForm = () => {
                 name: 'name',
                 placeholder: 'Study',
                 required: true,
+                value: name,
             }),
             label: 'Name',
         }),
@@ -19,6 +32,7 @@ export const createProjectForm = () => {
                 type: 'textarea',
                 name: 'description',
                 placeholder: 'Add description...',
+                value: description,
             }),
             label: 'Description',
         }),
@@ -37,12 +51,12 @@ export const createProjectForm = () => {
             const description = data.get('description');
 
             const project = new Project({
-                id: `proj:${crypto.randomUUID()}`,
+                id: projectId,
                 name,
                 description,
             });
             
-            const submitFormEvent = new CustomEvent('project:add', {
+            const submitFormEvent = new CustomEvent(`project:${event}`, {
                 detail: { project },
             });
             document.dispatchEvent(submitFormEvent);
@@ -53,9 +67,9 @@ export const createProjectForm = () => {
     return projectForm;
 };
 
-export const updateProjectDialog = (dialog) => {
-    const headerTitle = 'Add a project';
-    const content = createProjectForm();
+export const updateProjectDialog = (dialog, project = null) => {
+    const headerTitle = `${project ? 'Edit' : 'Add'} a project`;
+    const content = createProjectForm(project);
     const footerButtons = [
         createButton({
             className: 'form-cancel dialog-close',
@@ -64,8 +78,8 @@ export const updateProjectDialog = (dialog) => {
         }),
         createButton({
             className: 'form-cta',
-            textContent: 'Add',
-            attributes: { name: 'add' },
+            textContent: 'Confirm',
+            attributes: { name: 'confirm' },
             form: content.id,
         }),
     ];

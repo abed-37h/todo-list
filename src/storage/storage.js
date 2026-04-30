@@ -33,7 +33,7 @@ export default class StorageInterface {
     update(updatedItem) {
         localStorage.setItem(
             this.#name,
-            this.fetch().map(item => item.id === updatedItem.id ? JSON.stringify(updatedItem) : item),
+            JSON.stringify(this.fetch().map(item => item.id === updatedItem.id ? updatedItem : item)),
         );
     }
 

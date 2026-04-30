@@ -135,12 +135,25 @@ const app = () => {
         updateProjectDialog(dialog);
         dialog.showModal();
     });
+    
+    document.addEventListener('project:edit', e => {
+        updateProjectDialog(dialog, e.detail.project);
+        dialog.showModal();
+    });
 
     document.addEventListener('project:add', e => {
         const project = e.detail.project;
         projectStorage.insert(project);
         location.reload();
 
+        dialog.close();
+    });
+
+    document.addEventListener('project:update', e => {
+        const project = e.detail.project;
+        projectStorage.update(project);
+        location.reload();
+        
         dialog.close();
     });
 
