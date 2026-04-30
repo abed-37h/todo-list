@@ -40,7 +40,7 @@ export default class StorageInterface {
     delete(id) {
         localStorage.setItem(
             this.#name,
-            this.fetch().filter(item => item.id !== id),
+            JSON.stringify(this.fetch().filter(item => item.id !== id)),
         );
     }
 

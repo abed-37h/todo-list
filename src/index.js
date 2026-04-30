@@ -80,7 +80,7 @@ const app = () => {
     
     const categoryList = createGroupList(categories);
     
-    const projectContainer = createGroupContainer(projects, 'Projects');
+    const projectContainer = createGroupContainer(projects, 'Projects', true);
     
     sidebar.append(
         toggleSidebarButton,
@@ -118,6 +118,14 @@ const app = () => {
         dialog.close();
     });
     
+    document.addEventListener('todo:delete', e => {
+        const todo = e.detail.todo;
+        todoStorage.delete(todo.id);
+        location.reload();
+        
+        dialog.close();
+    });
+    
     document.addEventListener('todo:view', e => {
         updateTodoDialog(dialog, 'view', e.detail.todo);
         dialog.showModal();
@@ -133,6 +141,14 @@ const app = () => {
         projectStorage.insert(project);
         location.reload();
 
+        dialog.close();
+    });
+
+    document.addEventListener('project:delete', e => {
+        const project = e.detail.project;
+        projectStorage.delete(project.id);
+        location.reload();
+        
         dialog.close();
     });
 };

@@ -80,3 +80,11 @@
     color: var(--priority-color);
     background-color: hsl(from var(--priority-color) h s 90%);
 }
+
+.todo-item .action-list {
+    visibility: hidden;
+}
+
+.todo-item:hover .action-list {
+    visibility: visible;
+}

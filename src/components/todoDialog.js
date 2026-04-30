@@ -131,7 +131,19 @@ export const updateTodoDialog = (dialog, mode, todo = null) => {
     else {
         headerTitle = todo.title;
         content = createTodoView(todo);
-        footerButtons = [];
+        footerButtons = [
+            createButton({
+                className: 'delete danger',
+                textContent: 'Delete',
+                attributes: { name: 'delete' },
+                onClick: () => {
+                    const deleteTodoEvent = new CustomEvent('todo:delete', {
+                        detail: { todo },
+                    });
+                    document.dispatchEvent(deleteTodoEvent);
+                }
+            })
+        ];
     }
 
     setDialogHeaderTitle(dialog, headerTitle);

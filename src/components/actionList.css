@@ -1,0 +1,22 @@
+
+.action-list {
+    display: flex;
+    gap: .5rem;
+}
+
+.action-list .action-button {
+    padding: 0;
+}
+
+.action-list .action-button .icon {
+    fill: var(--neutral-50);
+}
+
+.action-list .action-button:hover .icon {
+    filter: drop-shadow(4px 4px 16px var(--neutral-100));
+    transform: scale(1.05);
+}
+
+.action-list .action-button .icon.danger {
+    fill: hsl(from var(--danger) h s l / 60%);
+}

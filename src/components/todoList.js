@@ -2,6 +2,8 @@ import './todoList.css';
 import { createCheckbox } from './checkbox.js';
 import { createList, createListContainer, createListHeader } from './list.js';
 import { formatFullDate } from '../utils/dateUtils.js';
+import { createActionList, DEFAULT_ACTIONS } from './actionList.js';
+import { createIconButton } from './icon.js';
 
 export const createTodoItem = (todo) => {
     const todoItem = document.createElement('li');
@@ -32,11 +34,25 @@ export const createTodoItem = (todo) => {
     todoPriority.className = `todo-priority p-${todo.priority}`;
     todoPriority.textContent = todo.priority;
 
+    const actionsContainer = document.createElement('div');
+    actionsContainer.className = 'actions-container';
+
+    const actionList = createActionList(
+        Object.values(DEFAULT_ACTIONS).map(action => createIconButton(action)),
+    );
+    actionList.addEventListener('action:delete', () => {
+        const deleteTodoEvent = new CustomEvent('todo:delete', {
+            detail: { todo },
+        });
+        document.dispatchEvent(deleteTodoEvent);
+    });
+
     todoItem.append(
         toggleCompletionCheckbox,
         todoTitle,
         todoDueDate,
         todoPriority,
+        actionList,
     );
 
     return todoItem;

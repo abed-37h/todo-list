@@ -27,3 +27,19 @@
 .group-item .group-name {
     flex: 1;
 }
+
+.group-item .action-list {
+    visibility: hidden;
+}
+
+.group-item:hover .action-list {
+    visibility: visible;
+}
+
+.group-item .action-list .icon {
+    fill: var(--neutral-25);
+}
+
+.group-item .action-list .icon.danger {
+    fill: hsl(from var(--danger) h s l / 50%);
+}

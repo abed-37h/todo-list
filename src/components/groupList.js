@@ -1,4 +1,7 @@
+import Project from '../classes/project.js';
+import { createActionList, DEFAULT_ACTIONS } from './actionList.js';
 import './groupList.css'
+import { createIconButton } from './icon.js';
 import { createList, createListContainer, createListHeader } from './list.js';
 
 export const createGroupItem = (group) => {
@@ -12,6 +15,20 @@ export const createGroupItem = (group) => {
     groupName.textContent = group.name;
 
     groupItem.append(groupName);
+
+    if (group instanceof Project) {
+        const actionList = createActionList(
+            Object.values(DEFAULT_ACTIONS).map(action => createIconButton(action)),
+        );
+        actionList.addEventListener('action:delete', () => {
+            const deleteTodoEvent = new CustomEvent('project:delete', {
+                detail: { project: group },
+            });
+            document.dispatchEvent(deleteTodoEvent);
+        });
+        
+        groupItem.append(actionList);
+    }
 
     return groupItem;
 };
