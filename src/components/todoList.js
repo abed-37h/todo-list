@@ -40,6 +40,12 @@ export const createTodoItem = (todo) => {
     const actionList = createActionList(
         Object.values(DEFAULT_ACTIONS).map(action => createIconButton(action)),
     );
+    actionList.addEventListener('action:edit', () => {
+        const editTodoEvent = new CustomEvent('todo:edit', {
+            detail: { todo },
+        });
+        document.dispatchEvent(editTodoEvent);
+    });
     actionList.addEventListener('action:delete', () => {
         const deleteTodoEvent = new CustomEvent('todo:delete', {
             detail: { todo },

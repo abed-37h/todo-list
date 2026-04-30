@@ -106,13 +106,26 @@ const app = () => {
     );
 
     document.addEventListener('todo:input', () => {
-        updateTodoDialog(dialog, 'add');
+        updateTodoDialog(dialog, 'form');
+        dialog.showModal();
+    });
+
+    document.addEventListener('todo:edit', e => {
+        updateTodoDialog(dialog, 'form', e.detail.todo);
         dialog.showModal();
     });
 
     document.addEventListener('todo:add', e => {
         const todo = e.detail.todo;
         todoStorage.insert(todo);
+        location.reload();
+        
+        dialog.close();
+    });
+
+    document.addEventListener('todo:update', e => {
+        const todo = e.detail.todo;
+        todoStorage.update(todo);
         location.reload();
         
         dialog.close();

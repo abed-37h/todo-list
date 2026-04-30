@@ -5,7 +5,23 @@ import { setDialogFooterButtons, setDialogHeaderTitle, updateDialogContent } fro
 import { createDetailedView, createField } from './detailedView.js';
 import { formatFullDate } from '../utils/dateUtils.js';
 
-export const createTodoForm = () => {
+export const createTodoForm = (todo) => {
+    let title = null;
+    let description = null;
+    let dueDate = null;
+    let priority = null;
+    let event = 'add';
+    let todoId = `todo:${crypto.randomUUID()}`;
+
+    if (todo) {
+        title = todo.title;
+        description = todo.description;
+        dueDate = todo.dueDate;
+        priority = todo.priority;
+        event = 'update';
+        todoId = todo.id;
+    }
+    
     const formInputSection = createInputSection([
         createInputContainer({
             input: createInputTextbox({
@@ -13,6 +29,7 @@ export const createTodoForm = () => {
                 name: 'title',
                 placeholder: 'Finish my assignments',
                 required: true,
+                value: title,
             }),
             label: 'Title',
         }),
@@ -21,6 +38,7 @@ export const createTodoForm = () => {
                 type: 'textarea',
                 name: 'description',
                 placeholder: 'Add description...',
+                value: description,
             }),
             label: 'Description',
         }),
@@ -28,6 +46,7 @@ export const createTodoForm = () => {
             input: createInputTextbox({
                 type: 'datetime-local',
                 name: 'dueDate',
+                value: dueDate,
             }),
             label: 'Due Date',
         }),
@@ -35,6 +54,7 @@ export const createTodoForm = () => {
             input: createSelectInput({
                 name: 'priority',
                 options: Object.values(Todo.PRIORITIES),
+                value: priority,
             }),
             label: 'Priority',
         }),
@@ -55,14 +75,14 @@ export const createTodoForm = () => {
             const priority = data.get('priority');
 
             const todo = new Todo({
-                id: `todo:${crypto.randomUUID()}`,
+                id: todoId,
                 title,
                 description,
                 dueDate,
                 priority,
             });
             
-            const submitFormEvent = new CustomEvent('todo:add', {
+            const submitFormEvent = new CustomEvent(`todo:${event}`, {
                 detail: { todo },
             });
             document.dispatchEvent(submitFormEvent);
@@ -111,9 +131,9 @@ export const updateTodoDialog = (dialog, mode, todo = null) => {
     let content = document.createElement('div');
     let footerButtons = [];
 
-    if (mode === 'add') {
-        headerTitle = 'Add a todo';
-        content = createTodoForm();
+    if (mode === 'form') {
+        headerTitle = `${todo ? 'Edit' : 'Add'} a todo`;
+        content = createTodoForm(todo);
         footerButtons = [
             createButton({
                 className: 'form-cancel dialog-close',
@@ -122,8 +142,8 @@ export const updateTodoDialog = (dialog, mode, todo = null) => {
             }),
             createButton({
                 className: 'form-cta',
-                textContent: 'Add',
-                attributes: { name: 'add' },
+                textContent: 'Confirm',
+                attributes: { name: 'confirm' },
                 form: content.id,
             }),
         ];
