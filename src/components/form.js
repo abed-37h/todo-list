@@ -108,10 +108,16 @@ export const createSelectInput = ({
     selectInput.name = name;
     selectInput.required = required;
     selectInput.append(
-        ...options.map(value => {
+        ...options.map(op => {
             const option = document.createElement('option');
-            option.value = value;
-            option.textContent = value[0].toUpperCase() + value.slice(1);
+            if (typeof op === 'string') {
+                option.value = op;
+                option.textContent = op[0].toUpperCase() + op.slice(1);
+            }
+            else {
+                option.value = op.value;
+                option.textContent = op.text;
+            }
 
             return option;
         }),

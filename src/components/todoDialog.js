@@ -4,12 +4,17 @@ import { createButton, createForm, createInputContainer, createInputSection, cre
 import { setDialogFooterButtons, setDialogHeaderTitle, updateDialogContent } from './dialog.js';
 import { createDetailedView, createField } from './detailedView.js';
 import { formatFullDate } from '../utils/dateUtils.js';
+import StorageInterface from '../storage/storage.js';
+import Project from '../classes/project.js';
 
 export const createTodoForm = (todo) => {
+    const availableProjects = new StorageInterface('projects', Project).fetch();
+
     let title = null;
     let description = null;
     let dueDate = null;
-    let priority = null;
+    let priority = 'low';
+    let projectId = null;
     let event = 'add';
     let todoId = `todo:${crypto.randomUUID()}`;
 
@@ -18,6 +23,7 @@ export const createTodoForm = (todo) => {
         description = todo.description;
         dueDate = todo.dueDate;
         priority = todo.priority;
+        projectId = availableProjects.find(project => project.id == todo.projectId)?.id;
         event = 'update';
         todoId = todo.id;
     }
@@ -58,6 +64,25 @@ export const createTodoForm = (todo) => {
             }),
             label: 'Priority',
         }),
+        createInputContainer({
+            input: createSelectInput({
+                name: 'projectId',
+                options: [
+                    {
+                        value: '',
+                        text: 'None',
+                    },
+                    ...availableProjects.map(project => {
+                        return {
+                            value: project.id,
+                            text: project.name,
+                        };
+                    }),
+                ],
+                value: projectId || '',
+            }),
+            label: 'Project',
+        }),
     ]);
     
     const todoForm = createForm({
@@ -73,6 +98,7 @@ export const createTodoForm = (todo) => {
             const description = data.get('description');
             const dueDate = data.get('dueDate') || null;
             const priority = data.get('priority');
+            const projectId = data.get('projectId') || null;
 
             const todo = new Todo({
                 id: todoId,
@@ -80,6 +106,7 @@ export const createTodoForm = (todo) => {
                 description,
                 dueDate,
                 priority,
+                projectId,
             });
             
             const submitFormEvent = new CustomEvent(`todo:${event}`, {
@@ -114,6 +141,11 @@ export const createTodoView = (todo) => {
             label: 'Priority',
             value: todo.priority,
             className: 'priority',
+        }),
+        createField({
+            label: 'Project',
+            value: new StorageInterface('projects', Project).find(todo.projectId)?.name || 'Not in a project',
+            className: 'todo-project',
         }),
         createField({
             label: 'Status',
