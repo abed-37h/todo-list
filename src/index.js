@@ -14,27 +14,28 @@ import { updateTodoDialog } from './components/todoDialog.js';
 import { updateProjectDialog } from './components/projectDialog.js';
 import StorageInterface from './storage/storage.js';
 
+const categoryStorage = new StorageInterface('categories', Category);
 const projectStorage = new StorageInterface('projects', Project);
 const todoStorage = new StorageInterface('todos', Todo);
 
-const categories = [
+const defaultCategories = [
     new Category({
         id: `cat:${crypto.randomUUID()}`,
         name: 'Inbox',
         description: 'You can find all standalone todo here.',
-        filterFn: todo => todo.projectId === null,
+        filterFn: 'inbox',
     }),
     new Category({
         id: `cat:${crypto.randomUUID()}`,
         name: 'Today',
         description: 'Todo due to today are here.',
-        filterFn: todo => todo.dueDate === new Date(),
+        filterFn: 'today',
     }),
     new Category({
         id: `cat:${crypto.randomUUID()}`,
         name: 'Completed',
         description: 'Here are the completed todos',
-        filterFn: todo => todo.completed,
+        filterFn: 'completed',
     }),
 ];
 
@@ -54,9 +55,14 @@ const defaultTodos = [
     }),
 ];
 
+let categories = categoryStorage.fetch();
 let projects = projectStorage.fetch();
 let todos = todoStorage.fetch();
-let activeGroup = categories[0];
+
+if (!categories) {
+    categories = defaultCategories;
+    categoryStorage.insert(...defaultCategories);
+}
 
 if (!projects) {
     projects = defaultProjects;
@@ -67,6 +73,8 @@ if (!todos) {
     todos = defaultTodos;
     todoStorage.insert(...defaultTodos);
 }
+
+let activeGroup = categories[0];
 
 const app = () => {
     const sidebar = document.createElement('aside');
