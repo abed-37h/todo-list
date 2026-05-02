@@ -89,3 +89,23 @@ export const createTodoContainer = (todos, title = 'Todos') => {
 
     return todoContainer;
 };
+
+export const updateTodoList = (todoList, todos) => {
+    todoList.replaceWith(createTodoList(todos));
+};
+
+export const updateTodoContainer = (todoContainer, {
+    headerTitle = null,
+    todos = null,
+}) => {
+    if (headerTitle) {
+        todoContainer.querySelector('.header-title').textContent = headerTitle;
+    }
+
+    if (todos) {
+        updateTodoList(
+            todoContainer.querySelector('.todo-list'),
+            todos,
+        );
+    }
+};

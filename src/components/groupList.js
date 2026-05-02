@@ -64,3 +64,42 @@ export const createGroupContainer = (groups, title = 'Projects') => {
 
     return groupContainer;
 };
+
+export const updateGroupList = (groupList, groups) => {
+    groupList.replaceWith(createGroupList(groups));
+};
+
+export const updateGroupContainer = (groupContainer, {
+    headerTitle = null,
+    groups = null
+}) => {
+    if (headerTitle) {
+        groupContainer.querySelector('.header-title').textContent = headerTitle;
+    }
+
+    if (groups) {
+        updateGroupList(
+            groupContainer.querySelector('.group-list'),
+            groups,
+        );
+    }
+};
+
+export const updateActiveGroup = (groups, activeGroupId) => {
+    const activeGroup = groups.find(group => group.id === activeGroupId);
+
+    if (!activeGroup) {
+        return null;
+    }
+
+    document.querySelectorAll('.group-item').forEach(groupItem => {
+        if (groupItem.dataset.id === activeGroupId) {
+            groupItem.classList.add('active');
+        }
+        else {
+            groupItem.classList.remove('active');
+        }
+    });
+
+    return activeGroup;
+};

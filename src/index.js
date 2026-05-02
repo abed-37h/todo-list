@@ -7,8 +7,8 @@ import Todo from './classes/todo.js';
 import Project from './classes/project.js';
 import Category from './classes/category.js';
 import { createIconButton } from './components/icon.js';
-import { createGroupContainer, createGroupList } from './components/groupList.js';
-import { createTodoContainer } from './components/todoList.js';
+import { createGroupContainer, createGroupList, updateActiveGroup, updateGroupContainer } from './components/groupList.js';
+import { createTodoContainer, updateTodoContainer } from './components/todoList.js';
 import { createDialog } from './components/dialog.js';
 import { updateTodoDialog } from './components/todoDialog.js';
 import { updateProjectDialog } from './components/projectDialog.js';
@@ -56,6 +56,7 @@ const defaultTodos = [
 
 let projects = projectStorage.fetch();
 let todos = todoStorage.fetch();
+let activeGroup = categories[0];
 
 if (!projects) {
     projects = defaultProjects;
@@ -118,7 +119,10 @@ const app = () => {
     document.addEventListener('todo:add', e => {
         const todo = e.detail.todo;
         todoStorage.insert(todo);
-        location.reload();
+        todos = todoStorage.fetch();
+        updateTodoContainer(todoContainer, {
+            todos: todos.filter(activeGroup.filterFn),
+        });
         
         dialog.close();
     });
@@ -126,7 +130,10 @@ const app = () => {
     document.addEventListener('todo:update', e => {
         const todo = e.detail.todo;
         todoStorage.update(todo);
-        location.reload();
+        todos = todoStorage.fetch();
+        updateTodoContainer(todoContainer, {
+            todos: todos.filter(activeGroup.filterFn),
+        });
         
         dialog.close();
     });
@@ -134,7 +141,10 @@ const app = () => {
     document.addEventListener('todo:delete', e => {
         const todo = e.detail.todo;
         todoStorage.delete(todo.id);
-        location.reload();
+        todos = todoStorage.fetch();
+        updateTodoContainer(todoContainer, {
+            todos: todos.filter(activeGroup.filterFn),
+        });
         
         dialog.close();
     });
@@ -157,7 +167,10 @@ const app = () => {
     document.addEventListener('project:add', e => {
         const project = e.detail.project;
         projectStorage.insert(project);
-        location.reload();
+        projects = projectStorage.fetch();
+        updateGroupContainer(projectContainer, {
+            groups: projects,
+        });
 
         dialog.close();
     });
@@ -165,7 +178,10 @@ const app = () => {
     document.addEventListener('project:update', e => {
         const project = e.detail.project;
         projectStorage.update(project);
-        location.reload();
+        projects = projectStorage.fetch();
+        updateGroupContainer(projectContainer, {
+            groups: projects,
+        });
         
         dialog.close();
     });
@@ -173,36 +189,38 @@ const app = () => {
     document.addEventListener('project:delete', e => {
         const project = e.detail.project;
         projectStorage.delete(project.id);
-        location.reload();
+        projects = projectStorage.fetch();
+        updateGroupContainer(projectContainer, {
+            groups: projects,
+        });
         
         dialog.close();
     });
 };
 
 
-const updateActiveGroup = () => {
+const updateContent = () => {
     const  activeGroupId = location.hash.substring(1) || categories[0].id;
-    const activeGroup = [...categories, ...projects].find(group => group.id === activeGroupId);
+    const newActiveGroup = updateActiveGroup([...categories, ...projects], activeGroupId);
 
-    if (activeGroupId.startsWith('todo')) {
+    if (!newActiveGroup) {
         return;
     }
 
-    document.querySelectorAll('.group-item').forEach(groupItem => {
-        if (groupItem.dataset.id === activeGroupId) {
-            groupItem.classList.add('active');
-        }
-        else {
-            groupItem.classList.remove('active');
-        }
-    });
+    activeGroup = newActiveGroup;
 
-    document.querySelector('.todo-header .header-title').textContent = activeGroup.name;
+    updateTodoContainer(
+        document.querySelector('.todo-container'),
+        {
+            headerTitle: activeGroup.name,
+            todos: todos.filter(activeGroup.filterFn),
+        }
+    )
 };
 
 window.addEventListener('load', () => {
     app();
-    updateActiveGroup();
+    updateContent();
 });
 
-window.addEventListener('hashchange', updateActiveGroup);
+window.addEventListener('hashchange', updateContent);
