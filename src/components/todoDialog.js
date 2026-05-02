@@ -9,6 +9,7 @@ import Project from '../classes/project.js';
 
 export const createTodoForm = (todo) => {
     const availableProjects = new StorageInterface('projects', Project).fetch();
+    const activeProjectId = location.hash.startsWith('#proj') ? location.hash.substring(1) : null;
 
     let title = null;
     let description = null;
@@ -79,7 +80,7 @@ export const createTodoForm = (todo) => {
                         };
                     }),
                 ],
-                value: projectId || '',
+                value: projectId || activeProjectId || '',
             }),
             label: 'Project',
         }),
