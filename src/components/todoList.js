@@ -10,10 +10,21 @@ export const createTodoItem = (todo) => {
     todoItem.className = 'list-item todo-item';
     todoItem.dataset.id = todo.id;
 
-    const toggleCompletionCheckbox = createCheckbox();
+    if (todo.completed) {
+        todoItem.classList.add('completed');
+    }
+
+    const toggleCompletionCheckbox = createCheckbox(todo.completed);
     toggleCompletionCheckbox.className = 'toggle-completion-checkbox';
 
-    toggleCompletionCheckbox.addEventListener('change', () => todoItem.classList.toggle('completed'));
+    toggleCompletionCheckbox.addEventListener('change', () => {
+        todo.toggleComplete();
+
+        const toggleCompleteEvent = new CustomEvent('todo:update', {
+            detail: { todo },
+        });
+        document.dispatchEvent(toggleCompleteEvent);
+    });
 
     const todoTitle = document.createElement('a');
     todoTitle.className = 'item-name todo-title';
