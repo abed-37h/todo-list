@@ -39,7 +39,7 @@ export const createTodoItem = (todo) => {
 
     const todoDueDate = document.createElement('p');
     todoDueDate.className = 'item-date todo-due-date';
-    todoDueDate.textContent = formatFullDate(todo.dueDate);
+    todoDueDate.textContent = formatFullDate(todo.dueDate, { relative: true });
 
     const todoPriority = document.createElement('span');
     todoPriority.className = `todo-priority p-${todo.priority}`;

@@ -1,6 +1,6 @@
 import { addWeeks, compareAsc, differenceInCalendarDays, format, formatRelative, getDay, isDate, isExists, isFuture, isThisWeek, isToday, parseJSON } from "date-fns";
 
-const DATE_FORMAT = 'PPPPp';
+export const DATE_FORMAT = 'PPPPp';
 
 export const isValidDate = date => isDate(date) && isExists(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -12,7 +12,10 @@ export const isWithinAWeek = date => isValidDate(date) && isThisWeek(date, { wee
 
 export const getNextWeekDate = () => addWeeks(new Date(), 1);
 
-export const formatFullDate = (date, dateFormat = DATE_FORMAT) => {
+export const formatFullDate = (date, {
+    dateFormat = DATE_FORMAT,
+    relative = false
+} = {}) => {
     if (!isValidDate(date)) {
         return null;
     }
@@ -20,7 +23,7 @@ export const formatFullDate = (date, dateFormat = DATE_FORMAT) => {
     const today = new Date();
 
     return (
-        Math.abs(differenceInCalendarDays(date, today)) < 2 ?
+        Math.abs(differenceInCalendarDays(date, today)) < 2 && relative ?
             formatRelative(date, today) :
             format(date, dateFormat)
     );

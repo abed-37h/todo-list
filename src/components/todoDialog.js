@@ -53,7 +53,7 @@ export const createTodoForm = (todo) => {
             input: createInputTextbox({
                 type: 'datetime-local',
                 name: 'dueDate',
-                value: dueDate,
+                value: formatFullDate(dueDate, { dateFormat: "yyyy-MM-dd'T'HH:mm" }),
             }),
             label: 'Due Date',
         }),
@@ -135,7 +135,7 @@ export const createTodoView = (todo) => {
         }),
         createField({
             label: 'Due Date',
-            value: formatFullDate(todo.dueDate),
+            value: formatFullDate(todo.dueDate, { relative: true }),
             className: 'due-date',
         }),
         createField({
